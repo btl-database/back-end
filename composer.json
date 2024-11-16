@@ -1,0 +1,14 @@
+{
+    "name": "mk/btl-database",
+    "autoload": {
+        "psr-4": {
+            "Mk\\BtlDatabase\\": "src/"
+        }
+    },
+    "scripts": {
+        "start": "php -S 127.0.0.1:8080 -t src"
+    },
+    "require": {
+        "firebase/php-jwt": "^6.10"
+    }
+}
