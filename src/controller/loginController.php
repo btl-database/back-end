@@ -1,7 +1,8 @@
 <?php
 
 class loginController extends Controller {
-    public function PUT () {
+
+    public function POST () {
         $data = $this->hospitalRepository->getPasswordByUsername($this->requestBody['username'])[0];
 
         if($data['password'] == $this->requestBody['password']) {
