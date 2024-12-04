@@ -1,7 +1,7 @@
 <?php
 
 class hospitalRepository extends dataBaseRepository {
-    public function getPasswordByUsername($username) {
+    public function getPasswordByUsername() {
         $sql = "
             SELECT password FROM user_data
             WHERE username = 'admin'
@@ -94,5 +94,61 @@ class hospitalRepository extends dataBaseRepository {
         ";
 
         return $this->getDataFromResult($this->queryExecutor($sql));
+    }
+
+    public function getAllExaminationReport() {
+        $sql = "
+            SELECT * FROM examination a 
+            INNER JOIN exam_use_med b 
+            ON a.exam_id = b.exam_id
+            INNER JOIN medication c
+            ON c.m_code = b.m_code
+            INNER JOIN medication_effect d 
+            ON d.m_code = c.m_code
+        ";
+
+        return $this->getDataFromResult($this->queryExecutor($sql));
+    }
+
+    public function getAllTreatmentReport() {
+        $sql = "
+            SELECT * FROM treatment a 
+            INNER JOIN treat_use_med b
+            ON a.treat_code = b.treat_code
+            INNER JOIN medication c 
+            ON c.m_code = b.m_code
+            INNER JOIN doc_treat_inpa d 
+            ON d.treat_code = a.treat_code
+            INNER JOIN medication_effect e
+            ON e.m_code = c.m_code
+        ";
+
+        return($this->getDataFromResult($this->queryExecutor($sql)));
+    }
+
+    public function getAllOutPatientInfo() {
+        $sql = "
+            SELECT * FROM outpatient a
+            INNER JOIN examination b 
+            ON b.p_char = a.p_char AND b.p_code = a.p_number
+        ";
+
+        return $this->getDataFromResult($this->queryExecutor($sql));
+    }
+
+    public function getAllInPatienInfo() {
+        $sql = "
+            SELECT * FROM inpatient a 
+            JOIN doc_treat_inpa b 
+            ON a.p_char = b.p_char and a.p_number = b.p_number
+            JOIN treatment c 
+            ON c.treat_code = b.treat_code
+            JOIN treat_use_med d 
+            ON d.treat_code = c.treat_code
+            JOIN medication e 
+            ON e.m_code = d.m_code
+        ";
+
+        return($this->getDataFromResult($this->queryExecutor($sql)));
     }
 }
